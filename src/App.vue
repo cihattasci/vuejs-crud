@@ -23,7 +23,7 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                New Item
+                New Student
               </v-btn>
             </template>
             <v-card>
@@ -176,7 +176,7 @@ export default {
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'New Student' : 'Edit Student'
     },
   },
 
@@ -195,7 +195,7 @@ export default {
 
   methods: {
     getStudents() {
-      fetch('https://crudcrud.com/api/3fb24138b2594bc3a981459848e72397/students', {
+      fetch('https://crudcrud.com/api/ac71f9c77e4844adaf9ad6738ab43327/students', {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         method: 'GET',
       })
@@ -217,7 +217,7 @@ export default {
     },
 
     deleteItemConfirm () {
-      fetch(`https://crudcrud.com/api/3fb24138b2594bc3a981459848e72397/students/${this.id}`, {
+      fetch(`https://crudcrud.com/api/ac71f9c77e4844adaf9ad6738ab43327/students/${this.id}`, {
         method: 'DELETE',
       })
       this.students.splice(this.editedIndex, 1)
@@ -243,7 +243,7 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         delete this.editedItem._id;
-        fetch(`https://crudcrud.com/api/3fb24138b2594bc3a981459848e72397/students/${this.id}`, {
+        fetch(`https://crudcrud.com/api/ac71f9c77e4844adaf9ad6738ab43327/students/${this.id}`, {
           method: 'PUT',
           headers: { "Content-Type": "application/json; charset=utf-8" },
           body: JSON.stringify(this.editedItem),
@@ -254,7 +254,7 @@ export default {
           this.getStudents()
         })
       } else {
-        fetch(`https://crudcrud.com/api/3fb24138b2594bc3a981459848e72397/students/`, {
+        fetch(`https://crudcrud.com/api/ac71f9c77e4844adaf9ad6738ab43327/students/`, {
           headers: { "Content-Type": "application/json; charset=utf-8" },
           method: 'POST',
           body: JSON.stringify(this.editedItem),
