@@ -51,7 +51,7 @@
                     >
                       <v-text-field
                         v-model="editedItem.age"
-                        label="age"
+                        label="Age"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -61,7 +61,7 @@
                     >
                       <v-text-field
                         v-model="editedItem.grade"
-                        label="grade (g)"
+                        label="Grade"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -71,7 +71,7 @@
                     >
                       <v-text-field
                         v-model="editedItem.country"
-                        label="country (g)"
+                        label="Country"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -80,8 +80,8 @@
                       md="4"
                     >
                       <v-text-field
-                        v-model="editedItem.job"
-                        label="job (g)"
+                        v-model="editedItem.department"
+                        label="Department"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -152,7 +152,7 @@ export default {
       { text: 'Age', value: 'age', sortable: false },
       { text: 'Grade', value: 'grade', sortable: false },
       { text: 'Country', value: 'country', sortable: false },
-      { text: 'Job', value: 'job', sortable: false },
+      { text: 'Department', value: 'department', sortable: false },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     students: [],
@@ -162,15 +162,15 @@ export default {
       name: '',
       age: 0,
       grade: 0,
-      country: 0,
-      job: 0,
+      country: '',
+      department: '',
     },
     defaultItem: {
       name: '',
       age: 0,
       grade: 0,
-      country: 0,
-      job: 0,
+      country: '',
+      department: '',
     },
   }),
 
@@ -190,15 +190,18 @@ export default {
   },
 
   created () {
-    fetch('https://crudcrud.com/api/3fb24138b2594bc3a981459848e72397/students', {
+    this.getStudents();
+  },
+
+  methods: {
+    getStudents() {
+      fetch('https://crudcrud.com/api/3fb24138b2594bc3a981459848e72397/students', {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         method: 'GET',
       })
       .then(response => response.json())
       .then(data => this.students = data)
-  },
-
-  methods: {
+    },
     editItem (item) {
       this.id = item._id;
       this.editedIndex = this.students.indexOf(item)
@@ -239,12 +242,16 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        this.students[this.editedIndex] = this.editedItem;
         delete this.editedItem._id;
         fetch(`https://crudcrud.com/api/3fb24138b2594bc3a981459848e72397/students/${this.id}`, {
           method: 'PUT',
           headers: { "Content-Type": "application/json; charset=utf-8" },
           body: JSON.stringify(this.editedItem),
+        })
+        .then(() => {
+          this.editedItem._id = this.id;
+          this.students[this.editedIndex] = this.editedItem
+          this.getStudents()
         })
       } else {
         fetch(`https://crudcrud.com/api/3fb24138b2594bc3a981459848e72397/students/`, {
